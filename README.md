@@ -48,21 +48,4 @@ gcc -Wall -Wextra -o vf_control_sim vf_control_sim.c -lm
 
 Compiles cleanly with zero warnings under `-Wall -Wextra`.
 
-## Design notes
 
-- **V/f law**: voltage is scaled proportionally with frequency to hold magnetic flux roughly constant across the speed range — this is what lets a motor produce consistent torque at different speeds under open-loop control.
-- **Low-frequency voltage boost**: added and tapered out below 10 Hz to compensate for stator resistance losses that would otherwise starve the motor of torque near standstill — a detail every real VFD implements.
-- **Ramp profile**: acceleration is linear over a fixed time rather than an instant step, matching how real VFD firmware limits inrush current and mechanical stress during start-up.
-- **First-order motor response**: a simplified stand-in for full electromagnetic motor dynamics, used to show that actual motor speed lags the commanded frequency rather than tracking it perfectly.
-- **No plotting/external dependencies**: intentionally kept as pure C with printed output, matching how firmware running on a microcontroller would actually report values (e.g. over serial/debug logging), rather than relying on host-side visualization tools.
-
-## Possible extensions
-
-- Add a torque estimate as a function of the V/f ratio and slip
-- Add deceleration / reverse ramping
-- Model a full induction motor using differential equations (Rs, Rr, Ls, Lr, Lm) instead of a first-order lag approximation
-- Compare against a closed-loop (sensored) speed control scheme
-
-## Background
-
-Built as a portfolio project to demonstrate understanding of the motor control theory underlying variable frequency drive firmware, complementing a separate C-based VFD fault-handling state machine project.
